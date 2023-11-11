@@ -6,7 +6,7 @@
 /*   By: leo <leo@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 19:48:59 by legrandc          #+#    #+#             */
-/*   Updated: 2023/11/11 22:49:02 by leo              ###   ########.fr       */
+/*   Updated: 2023/11/11 22:55:32 by leo              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*get_next_line(int fd)
 	t_string	string;
 	static char	save[BUFFER_SIZE + 1];
 
-	if (fd == -1 || read(fd, "", 0) == -1)
+	if (fd == -1 || read(fd, "", 0) == -1 || BUFFER_SIZE < 1)
 		return (NULL);
 	string.default_size = BUFFER_SIZE * 10;
 	string.content = malloc(string.default_size);
@@ -100,6 +100,7 @@ char	*get_next_line(int fd)
 // 	int		fd;
 // 	char	*s;
 
+// 	(void)ac;
 // 	fd = open(av[1], O_RDONLY);
 // 	s = "";
 // 	while (s)
