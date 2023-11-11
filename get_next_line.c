@@ -6,7 +6,7 @@
 /*   By: leo <leo@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 19:48:59 by legrandc          #+#    #+#             */
-/*   Updated: 2023/11/11 22:31:18 by leo              ###   ########.fr       */
+/*   Updated: 2023/11/11 22:49:02 by leo              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,15 @@ int	read_file(int fd, t_string *string)
 	read_ret = 1;
 	while (!find_nl(string->content + line_len, &line_len) && read_ret)
 	{
-		if (string->len + BUFFER_SIZE >= string->max_len)
+		if (string->len + BUFFER_SIZE >= string->max_size)
 		{
-			tmp = malloc(string->max_len + STRING_MAX_SIZE);
+			tmp = malloc(string->max_size + string->default_size);
 			if (!tmp)
 				return (-1);
 			ft_memcpy(tmp, string->content, string->len + 1);
 			free(string->content);
 			string->content = tmp;
-			string->max_len += STRING_MAX_SIZE;
+			string->max_size += string->default_size;
 		}
 		read_ret = read(fd, string->content + string->len, BUFFER_SIZE);
 		string->len += read_ret;
@@ -74,8 +74,9 @@ char	*get_next_line(int fd)
 
 	if (fd == -1 || read(fd, "", 0) == -1)
 		return (NULL);
-	string.content = malloc(STRING_MAX_SIZE);
-	string.max_len = STRING_MAX_SIZE;
+	string.default_size = BUFFER_SIZE * 10;
+	string.content = malloc(string.default_size);
+	string.max_size = string.default_size;
 	string.len = 0;
 	while (save[string.len])
 		string.len++;
