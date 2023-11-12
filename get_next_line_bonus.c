@@ -6,7 +6,7 @@
 /*   By: leo <leo@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 19:48:59 by legrandc          #+#    #+#             */
-/*   Updated: 2023/11/12 01:08:22 by leo              ###   ########.fr       */
+/*   Updated: 2023/11/12 01:54:19 by leo              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ char	*get_next_line(int fd)
 		return (NULL);
 	string.default_size = BUFFER_SIZE * 10;
 	string.content = malloc(string.default_size);
+	if (!string.content)
+		return (NULL);
 	string.max_size = string.default_size;
 	string.len = 0;
 	while (save[fd][string.len])
@@ -116,4 +118,5 @@ char	*get_next_line(int fd)
 // 	printf("%d\n", fd);
 // 	s = get_next_line(fd);
 // 	printf("%s---", s);
+// 	free(s);
 // }
