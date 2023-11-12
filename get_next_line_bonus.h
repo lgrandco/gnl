@@ -6,7 +6,7 @@
 /*   By: leo <leo@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 19:51:59 by legrandc          #+#    #+#             */
-/*   Updated: 2023/11/12 00:37:44 by leo              ###   ########.fr       */
+/*   Updated: 2023/11/12 01:06:44 by leo              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #  define BUFFER_SIZE 10000000
 # endif
 
-# define FD 1024
+# define FD 512
 
 typedef struct s_string
 {

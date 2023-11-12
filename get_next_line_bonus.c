@@ -6,19 +6,11 @@
 /*   By: leo <leo@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 19:48:59 by legrandc          #+#    #+#             */
-/*   Updated: 2023/11/12 00:40:12 by leo              ###   ########.fr       */
+/*   Updated: 2023/11/12 01:08:22 by leo              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
-
-void	init_str(t_string *string)
-{
-	string->default_size = BUFFER_SIZE * 10;
-	string->content = malloc(string->default_size);
-	string->max_size = string->default_size;
-	string->len = 0;
-}
 
 int	find_nl(char *s, ssize_t *len)
 {
@@ -78,16 +70,14 @@ char	*get_next_line(int fd)
 	ssize_t		line_len;
 	char		*ret;
 	t_string	string;
-	static char	*save[FD];
+	static char	save[FD][BUFFER_SIZE + 1];
 
 	if (fd > FD || read(fd, "", 0) == -1 || BUFFER_SIZE < 1)
 		return (NULL);
-	if (!save[fd])
-	{
-		save[fd] = malloc(BUFFER_SIZE + 1);
-		*save[fd] = 0;
-	}
-	init_str(&string);
+	string.default_size = BUFFER_SIZE * 10;
+	string.content = malloc(string.default_size);
+	string.max_size = string.default_size;
+	string.len = 0;
 	while (save[fd][string.len])
 		string.len++;
 	ft_memcpy(string.content, save[fd], string.len + 1);
@@ -98,8 +88,9 @@ char	*get_next_line(int fd)
 	if (!ret)
 		return (free(string.content), NULL);
 	ft_memcpy(ret, string.content, line_len);
+	ret[line_len] = 0;
 	ft_memcpy(save[fd], string.content + line_len, string.len - line_len + 1);
-	return (free(string.content), ret[line_len] = 0, ret);
+	return (free(string.content), ret);
 }
 // #include <fcntl.h>
 // #include <stdio.h>
@@ -112,7 +103,7 @@ char	*get_next_line(int fd)
 
 // 	(void)ac;
 // 	i = 0;
-// 	while (i++ < 1000)
+// 	while (i++ < 10)
 // 		fd = open(av[1], O_RDONLY);
 // 	s = "";
 // 	i = 0;
