@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leo <leo@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: legrandc <legrandc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 19:48:59 by legrandc          #+#    #+#             */
-/*   Updated: 2023/11/12 01:54:19 by leo              ###   ########.fr       */
+/*   Updated: 2023/11/12 18:09:11 by legrandc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,8 @@ char	*get_next_line(int fd)
 	if (!ret)
 		return (free(string.content), NULL);
 	ft_memcpy(ret, string.content, line_len);
-	ret[line_len] = 0;
 	ft_memcpy(save[fd], string.content + line_len, string.len - line_len + 1);
-	return (free(string.content), ret);
+	return (free(string.content), ret[line_len] = 0, ret);
 }
 // #include <fcntl.h>
 // #include <stdio.h>
