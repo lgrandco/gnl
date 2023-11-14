@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leo <leo@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: legrandc <legrandc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 19:48:59 by legrandc          #+#    #+#             */
-/*   Updated: 2023/11/12 01:45:17 by leo              ###   ########.fr       */
+/*   Updated: 2023/11/14 20:42:20 by legrandc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,18 @@ int	find_nl(char *s, ssize_t *len)
 	return (0);
 }
 
-void	*ft_memcpy(void *dest, const void *src, size_t n)
+void	ft_strlcpy(char *dst, const char *src, size_t size)
 {
 	size_t	i;
 
 	i = 0;
-	while (i < n)
+	while (src[i] && i + 1 < size)
 	{
-		((unsigned char *)dest)[i] = ((unsigned char *)src)[i];
-		i++;
+		dst[i] = src[i];
+		++i;
 	}
-	return (dest);
+	if (size)
+		dst[i] = 0;
 }
 
 int	read_file(int fd, t_string *string)
@@ -50,13 +51,13 @@ int	read_file(int fd, t_string *string)
 	{
 		if (string->len + BUFFER_SIZE >= string->max_size)
 		{
-			tmp = malloc(string->max_size + string->default_size);
+			tmp = malloc(string->max_size * 2);
 			if (!tmp)
 				return (-1);
-			ft_memcpy(tmp, string->content, string->len + 1);
+			ft_strlcpy(tmp, string->content, string->len + 1);
 			free(string->content);
 			string->content = tmp;
-			string->max_size += string->default_size;
+			string->max_size *= 2;
 		}
 		read_ret = read(fd, string->content + string->len, BUFFER_SIZE);
 		string->len += read_ret;
@@ -74,24 +75,23 @@ char	*get_next_line(int fd)
 
 	if (read(fd, "", 0) == -1 || BUFFER_SIZE < 1)
 		return (NULL);
-	string.default_size = BUFFER_SIZE * 10;
-	string.content = malloc(string.default_size);
+	string.max_size = BUFFER_SIZE + 1;
+	string.content = malloc(string.max_size);
 	if (!string.content)
 		return (NULL);
-	string.max_size = string.default_size;
 	string.len = 0;
 	while (save[string.len])
 		string.len++;
-	ft_memcpy(string.content, save, string.len + 1);
+	ft_strlcpy(string.content, save, string.len + 1);
 	line_len = read_file(fd, &string);
 	if (!*string.content || line_len == -1)
 		return (free(string.content), NULL);
 	ret = malloc(line_len + 1);
 	if (!ret)
 		return (free(string.content), NULL);
-	ft_memcpy(ret, string.content, line_len);
-	ft_memcpy(save, string.content + line_len, string.len - line_len + 1);
-	return (free(string.content), ret[line_len] = 0, ret);
+	ft_strlcpy(ret, string.content, line_len + 1);
+	ft_strlcpy(save, string.content + line_len, string.len - line_len + 1);
+	return (free(string.content), ret);
 }
 // #include <fcntl.h>
 // #include <stdio.h>
