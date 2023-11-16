@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: legrandc <legrandc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: leo <leo@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 19:48:59 by legrandc          #+#    #+#             */
-/*   Updated: 2023/11/14 20:42:20 by legrandc         ###   ########.fr       */
+/*   Updated: 2023/11/16 17:29:33 by leo              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ int	read_file(int fd, t_string *string)
 			string->max_size *= 2;
 		}
 		read_ret = read(fd, string->content + string->len, BUFFER_SIZE);
+		if (read_ret == -1)
+			return (-1);
 		string->len += read_ret;
 		string->content[string->len] = 0;
 	}
@@ -73,7 +75,7 @@ char	*get_next_line(int fd)
 	t_string	string;
 	static char	save[BUFFER_SIZE + 1];
 
-	if (read(fd, "", 0) == -1 || BUFFER_SIZE < 1)
+	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
 	string.max_size = BUFFER_SIZE + 1;
 	string.content = malloc(string.max_size);
