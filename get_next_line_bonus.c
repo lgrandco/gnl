@@ -6,7 +6,7 @@
 /*   By: leo <leo@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 19:48:59 by legrandc          #+#    #+#             */
-/*   Updated: 2023/11/17 06:31:27 by leo              ###   ########.fr       */
+/*   Updated: 2023/11/17 06:38:03 by leo              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*get_next_line(int fd)
 	t_string	string;
 	static char	save[FD][BUFFER_SIZE];
 
-	if (fd > FD || fd < 0 || BUFFER_SIZE < 1)
+	if (fd >= FD || fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
 	string.max_size = BUFFER_SIZE + 1;
 	string.content = malloc(string.max_size);
