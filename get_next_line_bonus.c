@@ -6,7 +6,7 @@
 /*   By: leo <leo@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 19:48:59 by legrandc          #+#    #+#             */
-/*   Updated: 2023/11/16 17:35:21 by leo              ###   ########.fr       */
+/*   Updated: 2023/11/17 06:31:27 by leo              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ void	ft_strlcpy(char *dst, const char *src, size_t size)
 int	read_file(int fd, t_string *string)
 {
 	ssize_t	read_ret;
-	ssize_t	line_len;
+	ssize_t	ret;
 	char	*tmp;
 
-	line_len = 0;
-	read_ret = 1;
-	while (!find_nl(string->content + line_len, &line_len) && read_ret)
+	ret = 0;
+	read_ret = BUFFER_SIZE;
+	while (!find_nl(string->content + ret, &ret) && read_ret == BUFFER_SIZE)
 	{
 		if (string->len + BUFFER_SIZE >= string->max_size)
 		{
@@ -65,7 +65,7 @@ int	read_file(int fd, t_string *string)
 		string->len += read_ret;
 		string->content[string->len] = 0;
 	}
-	return (line_len);
+	return (ret);
 }
 
 char	*get_next_line(int fd)
@@ -73,7 +73,7 @@ char	*get_next_line(int fd)
 	ssize_t		line_len;
 	char		*ret;
 	t_string	string;
-	static char	save[FD][BUFFER_SIZE + 1];
+	static char	save[FD][BUFFER_SIZE];
 
 	if (fd > FD || fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
@@ -86,7 +86,7 @@ char	*get_next_line(int fd)
 		string.len++;
 	ft_strlcpy(string.content, save[fd], string.len + 1);
 	line_len = read_file(fd, &string);
-	if (!*string.content || line_len == -1)
+	if (line_len == -1 || !*string.content)
 		return (free(string.content), NULL);
 	ret = malloc(line_len + 1);
 	if (!ret)
