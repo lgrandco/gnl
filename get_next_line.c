@@ -6,7 +6,7 @@
 /*   By: leo <leo@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 19:48:59 by legrandc          #+#    #+#             */
-/*   Updated: 2023/11/17 06:29:16 by leo              ###   ########.fr       */
+/*   Updated: 2023/11/18 23:47:41 by leo              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	*get_next_line(int fd)
 	ssize_t		line_len;
 	char		*ret;
 	t_string	string;
-	static char	save[BUFFER_SIZE];
+	static char	save[BUFFER_SIZE] = {0};
 
 	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
